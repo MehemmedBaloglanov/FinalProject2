@@ -1,12 +1,21 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    topics:
+      resetPassword: ${RESETPASSWORD_TOPIC:user-ms-reset-password-topic}
+      registration: ${REGISTRATION_TOPIC:user-ms-registration-topic}
     producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      bootstrap-servers: ${KAFKA_HOST_NAME:${webclient.base-url}}:9092
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      acks: all
-      batch-size: 16384
+      properties:
+        acks: all
+        retries: 10
+        retry.backoff.ms: 1000
+        max.block.ms: 20000
+        delivery.timeout.ms: 100000
+    admin:
+      properties:
+        bootstrap.servers: ${KAFKA_HOST_NAME:${webclient.base-url}}:9092
     consumer:
-      group-id: user_group
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      bootstrap-servers: ${KAFKA_HOST_NAME:${webclient.base-url}}:${KAFKA_PORT:9092}
+      group-id: notification-group-id

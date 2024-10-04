@@ -67,11 +67,9 @@ public class UserServiceImpl implements UserService {
                     .build();
         }
 
-        // İstifadəçi bazaya yazılır və onun ID-si alınır
         UserEntity savedUser = userRepository.save(user);
 
-        // Bazaya yazılmış ID ilə Kafka'ya mesaj göndərilir
-        kafkaProducerService.sendMessage(kafkaTopic, savedUser);  // Kafka'ya mesaj savedUser obyektindən göndərilir
+        kafkaProducerService.sendMessage(kafkaTopic, savedUser);
 
         return RegistrationResponseDto.builder()
                 .userId(savedUser.getUserId())  // Bazaya yazılmış ID göndərilir
