@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class NotificationService {
+public class EmailService {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendNotification(String email, String subject, String body) {
+    public void sendRegistrationEmail(String email, String subject, String body) {
         log.info("Preparing to send email to: {}", email);
 
         try {
